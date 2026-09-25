@@ -650,7 +650,7 @@ def search():
     )
 
     return render_template(
-        "employees.html",
+        "search.html",
         employees=employees,
         theme=theme,
         search_text=search_text

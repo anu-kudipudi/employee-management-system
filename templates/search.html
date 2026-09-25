@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Search Employee</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            color: #222;
+            transition: 0.3s;
+        }
+
+        h1 {
+            text-align: center;
+            color: #302b63;
+            margin-top: 35px;
+            margin-bottom: 30px;
+        }
+
+        .theme-buttons {
+            text-align: right;
+            margin: 20px 30px;
+        }
+
+        .theme-buttons a {
+            display: inline-block;
+            padding: 8px 14px;
+            margin-left: 8px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            background: #302b63;
+            color: white;
+        }
+
+        .theme-buttons a:hover {
+            opacity: 0.85;
+        }
+
+        .search-box {
+            width: 400px;
+            max-width: 90%;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            color: #302b63;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            border-color: #8e44ad;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #8e44ad;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #732d91;
+        }
+
+        .result {
+            width: 90%;
+            margin: 30px auto;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: #302b63;
+            color: white;
+            padding: 13px;
+        }
+
+        td {
+            padding: 13px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f1e8f7;
+        }
+
+        .no-result {
+            text-align: center;
+            color: #777;
+            margin-top: 25px;
+            font-size: 18px;
+        }
+
+        /* =========================
+           DARK THEME
+           ========================= */
+
+        body.dark {
+            background-color: #121212;
+            color: white;
+        }
+
+        body.dark h1 {
+            color: white;
+        }
+
+        body.dark .search-box {
+            background-color: #1e1e1e;
+            box-shadow: 0 3px 15px rgba(255, 255, 255, 0.05);
+        }
+
+        body.dark label {
+            color: white;
+        }
+
+        body.dark input {
+            background-color: #2b2b2b;
+            color: white;
+            border: 1px solid #555;
+        }
+
+        body.dark input::placeholder {
+            color: #aaa;
+        }
+
+        body.dark table {
+            background-color: #1e1e1e;
+            color: white;
+        }
+
+        body.dark td {
+            border-bottom: 1px solid #444;
+        }
+
+        body.dark tr:hover {
+            background-color: #2b2030;
+        }
+
+        body.dark .no-result {
+            color: #ccc;
+        }
+
+        @media (max-width: 600px) {
+            .search-box {
+                width: 90%;
+            }
+
+            .result {
+                width: 95%;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body class="{{ theme }}">
+
+    <div class="theme-buttons">
+        <a href="/set-theme/light">☀️ Light</a>
+        <a href="/set-theme/dark">🌙 Dark</a>
+    </div>
+
+    <h1>Search Employee</h1>
+
+    <div class="search-box">
+
+        <form action="/search" method="GET">
+
+            <label>Search Employee</label>
+
+            <input
+                type="text"
+                name="q"
+                placeholder="Name, email, phone or department"
+                value="{{ search_text }}"
+            >
+
+            <button type="submit">
+                🔍 Search
+            </button>
+
+        </form>
+
+    </div>
+
+    {% if employees %}
+
+    <div class="result">
+
+        <table>
+
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Phone</th>
+            </tr>
+
+            {% for employee in employees %}
+
+            <tr>
+                <td>{{ employee['id'] }}</td>
+                <td>{{ employee['name'] }}</td>
+                <td>{{ employee['email'] }}</td>
+                <td>{{ employee['department'] }}</td>
+                <td>{{ employee['phone'] }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    {% elif search_text %}
+
+    <p class="no-result">
+        No employee found for "{{ search_text }}"
+    </p>
+
+    {% endif %}
+
+</body>
+</html>
